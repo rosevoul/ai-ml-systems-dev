@@ -1,55 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Faye RECSYS Demo</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <header class="nav-bar">
-      <div class="logo">FAYE RECSYS</div>
-      <nav>
-        <a href="#" class="active">Home</a>
-        <a href="project.html">Project</a>
-        <a href="demo.html">Demo</a>
-        <a href="#" title="Coming Soon">Architecture</a>
-        <a href="#" title="Coming Soon">Results</a>
-        <a href="#" title="Coming Soon">Notes</a>
-        <a href="#" title="Coming Soon">Blog</a>
-        <a href="#" title="Coming Soon">About</a>
-      </nav>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Faye RecSys Lab | Two-Tower + XGBoost</title>
+  <meta name="description" content="Interactive recommender systems portfolio demo showing Two-Tower retrieval, XGBoost ranking, explanations, and model internals." />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Faye RecSys Lab home">
+      <span class="brand-mark">FR</span>
+      <span>Faye RecSys Lab</span>
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="#demo">Demo</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#internals">Model Intrinsic</a>
+      <a href="#setup">API Setup</a>
+    </nav>
+  </header>
 
-    <section class="hero">
-      <div class="hero-text">
-        <span class="badge">Featured Project</span>
-        <h1>Transformer + RAG + Agentic Recommender System</h1>
-        <p>
-          A modern, end‑to‑end recommendation system with retrieval,
-          transformer ranking, generative explanations and agentic enhancements.
+  <main>
+    <section id="home" class="hero section-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Modern recommender systems portfolio demo</p>
+        <h1>Two-Tower retrieval + XGBoost ranking, explained visually.</h1>
+        <p class="lead">
+          A compact end-to-end recommendation stack: user and item embeddings retrieve candidates, a ranking model scores them, and explanations show why each movie was recommended.
         </p>
-        <div class="cta-buttons">
-          <a href="demo.html" class="btn-primary" id="explore-btn"
-            >Explore Demo</a
-          >
-          <a
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-secondary"
-            >View on GitHub</a
-          >
+        <div class="hero-actions">
+          <a class="button primary" href="#demo">Explore demo</a>
+          <a class="button secondary" href="#architecture">View architecture</a>
+        </div>
+        <div class="metrics-strip" aria-label="Demo metrics">
+          <div><strong id="metricUsers">12</strong><span>synthetic users</span></div>
+          <div><strong id="metricMovies">28</strong><span>MovieLens-style movies</span></div>
+          <div><strong>1</strong><span>implemented model</span></div>
         </div>
       </div>
-      <div class="hero-image">
-        <!-- Use the provided architecture graphic instead of a generated mock. -->
-        <img src="images/architecture.png" alt="Architecture diagram" />
-      </div>
+      <figure class="architecture-card" id="architecture">
+        <img src="assets/architecture.svg" alt="Two-Tower plus XGBoost recommender architecture diagram" />
+        <figcaption>Homepage visual intentionally shows only the architecture diagram.</figcaption>
+      </figure>
     </section>
 
-    <footer>
-      <p>&copy; 2026 Faye Voulivasi. All rights reserved.</p>
-    </footer>
-  </body>
+    <section id="demo" class="panel section-block">
+      <div class="section-heading">
+        <p class="eyebrow">Interactive demo</p>
+        <h2>Random MovieLens-style user → retrieval → ranking → explanations</h2>
+        <p>
+          Start from a random user profile. The demo simulates user history, retrieves candidate movies with embedding similarity, reranks with XGBoost-style features, and generates explanations.
+        </p>
+      </div>
+
+      <div class="controls-grid">
+        <label class="control-card">
+          <span>Model</span>
+          <select id="modelSelect" aria-label="Select recommender model">
+            <option value="two_tower_xgb">Two-Tower + XGBoost</option>
+            <option disabled>MBTR — coming next</option>
+            <option disabled>LiGR — coming next</option>
+            <option disabled>Rank Transformer — coming next</option>
+            <option disabled>Graph Transformer — coming next</option>
+          </select>
+        </label>
+        <label class="control-card">
+          <span>Random user seed</span>
+          <select id="userSelect" aria-label="Select random synthetic user"></select>
+        </label>
+        <label class="control-card">
+          <span>Novelty preference</span>
+          <input id="noveltySlider" type="range" min="0" max="100" value="45" />
+        </label>
+        <label class="control-card">
+          <span>Diversity preference</span>
+          <input id="diversitySlider" type="range" min="0" max="100" value="35" />
+        </label>
+      </div>
+
+      <div class="demo-layout">
+        <article class="glass-card user-profile">
+          <div class="card-title-row">
+            <h3>Selected user</h3>
+            <button id="randomUserBtn" class="button compact">Randomize</button>
+          </div>
+          <div id="userProfile"></div>
+        </article>
+
+        <article class="glass-card pipeline-trace">
+          <h3>Pipeline trace</h3>
+          <ol id="pipelineTrace"></ol>
+        </article>
+      </div>
+
+      <div class="results-toolbar">
+        <h3>Final recommendations</h3>
+        <button id="rerunBtn" class="button primary compact">Rerun scoring</button>
+      </div>
+      <div id="recommendations" class="recommendation-grid"></div>
+    </section>
+
+    <section id="internals" class="section-block internals-grid">
+      <div class="section-heading wide">
+        <p class="eyebrow">Model intrinsic visual</p>
+        <h2>Two-Tower + XGBoost internals</h2>
+        <p>One visual shows the full intrinsic behavior for the selected model: embedding retrieval on the left, ranking feature contribution on the right.</p>
+      </div>
+      <article class="glass-card visual-card">
+        <div class="card-title-row">
+          <h3>Embedding space</h3>
+          <span class="pill">Two-Tower retrieval</span>
+        </div>
+        <svg id="embeddingSvg" viewBox="0 0 520 360" role="img" aria-label="Embedding space visualization"></svg>
+      </article>
+      <article class="glass-card visual-card">
+        <div class="card-title-row">
+          <h3>Ranking explanation</h3>
+          <span class="pill">XGBoost-style score</span>
+        </div>
+        <div id="featureBars" class="feature-bars"></div>
+      </article>
+    </section>
+
+    <section id="setup" class="panel section-block setup-grid">
+      <div>
+        <p class="eyebrow">Optional online interaction</p>
+        <h2>OpenAI API setup</h2>
+        <p>
+          The public GitHub Pages version should not contain a committed API key. This demo works without one using deterministic explanations. For private testing, paste a temporary key below; it is stored only in this browser session.
+        </p>
+      </div>
+      <article class="glass-card api-card">
+        <label for="apiKeyInput">OpenAI API key for local/private testing</label>
+        <div class="api-row">
+          <input id="apiKeyInput" type="password" placeholder="sk-..." autocomplete="off" />
+          <button id="saveKeyBtn" class="button compact">Save session key</button>
+          <button id="clearKeyBtn" class="button compact secondary">Clear</button>
+        </div>
+        <p id="apiStatus" class="muted">No key stored. Demo explanations use local deterministic logic.</p>
+        <pre><code>Recommended production path:
+GitHub Pages frontend → serverless proxy → OpenAI API
+Store OPENAI_API_KEY only in the serverless environment.</code></pre>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Built for a Machine Learning Engineer portfolio.</span>
+    <span>Static GitHub Pages compatible.</span>
+  </footer>
+
+  <script src="assets/app.js"></script>
+</body>
 </html>

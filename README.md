@@ -1,81 +1,87 @@
-# FAYE RECSYS: End‑to‑End Transformer Recommendation Demo
+# Faye RecSys Lab — GitHub Pages Portfolio Demo
 
-This repository contains an interactive demo for a modern recommendation
-system built on top of the MovieLens dataset. The project illustrates how
-retrieval, various transformer‑based ranking models and generative retrieval
-(RAG) can be combined into a single workflow. Users can select one movie and
-optionally add up to three additional movies to simulate their viewing history,
-choose a ranking model and see a diagram of the underlying architecture and
-sample recommendations. The site is static and can be hosted on GitHub Pages or
-any static file server.
+Static portfolio demo for a modern recommender systems stack.
 
-## Features
+Implemented first model:
 
-* **Movie history selection** – users can choose a movie and add up to three
-  more to simulate their viewing history.
-* **Model selection** – choose between five models (Two‑Tower + XGBoost,
-  MBT4R/Transformers4Rec, LiGR, Rank Transformer and Graph Transformer).
-* **Architecture visualisation** – when a model is selected the page shows a
-  diagram representing the model’s architecture. The hero section of the
-  homepage includes the high‑level architecture image provided by the user.
-* **Top recommendations** – after selecting movies and a model, the page
-  displays sample recommendations and explanations for a hypothetical user.
-* **Dark‑themed layout** – inspired by modern ML dashboards, featuring a
-  hero section, navigation bar and cards for each recommendation.
-* **Modular design** – the code is organised into HTML, CSS and JavaScript
-  files with embedded data. You can replace the embedded lists with your
-  own models and recommendations.
+- Two-Tower retrieval
+- XGBoost-style ranking
+- MovieLens-style random users
+- Recommendation output cards
+- Local deterministic explanations
+- One intrinsic model visual: embedding space + ranking feature contribution
+- Homepage architecture diagram only, not a whole website mock
 
-## Getting Started
+## Upload to GitHub Pages
 
-1. Clone or download this repository.
-2. Open `index.html` in your browser to preview the project locally.
-3. Click **Explore Demo** to jump to the interactive demo page.
-4. Use the dropdown to select a model and see recommendations.
+1. Unzip this package.
+2. Copy `index.html` and the `assets/` folder into your GitHub Pages repository root.
+3. Commit and push.
+4. Open your GitHub Pages URL.
 
-### Deploy to GitHub Pages
+This is a static site. No build step is required.
 
-1. Create a new repository on GitHub (for example
-   `your‑username/your‑recsys‑demo`).
-2. Copy the contents of `faye_recsys_project` into the root of your new
-   repository.
-3. Commit and push all files.
-4. In your repository’s **Settings** → **Pages**, select the branch to serve the
-   site (usually `main`) and set the root as the source. GitHub will build
-   and publish your site. After a few minutes, it will be accessible at
-   `https://your‑username.github.io/your‑recsys‑demo/`.
+## Local preview
 
-### Training Your Own Models (Optional)
+Run any simple static server from the unzipped folder:
 
-The JSON file `recommendations.json` contains placeholder recommendations.
-To generate real recommendations from the MovieLens dataset:
+```bash
+python -m http.server 8000
+```
 
-1. Download the MovieLens dataset (e.g. the **ml‑latest‑small** set) from
-   the [official site](https://grouplens.org/datasets/movielens/).
-2. Use your preferred ML framework (e.g. PyTorch or TensorFlow) to train
-   models described in your portfolio:
-   * **Two‑Tower Retrieval + XGBoost** – learn user and item embeddings using
-     matrix factorisation or two‑tower architecture, then train a gradient
-     boosted decision tree ranker on candidate pairs.
-   * **MBT4R/Transformers4Rec** – implement a sequential transformer model for
-     session‑based recommendation.
-   * **LiGR** – implement the LinkedIn Generative Ranking architecture for
-     set‑wise ranking.
-   * **Rank Transformer** – implement a permutation‑invariant ranking model
-     with listwise objectives.
-   * **Graph Transformer** – sequentialise user–item graphs and apply
-     transformer attention across relational data.
-3. Export the top recommendations and explanations to a JSON file in the
-   same format as `recommendations.json` and drop it into the project
-   directory. Update `demo.js` if necessary.
+Then open:
 
-### Notes
+```text
+http://localhost:8000
+```
 
-* The demo uses placeholder explanations and movie titles. Replace these
-  entries with outputs from your trained models to reflect their true
-  behaviour.
-* This is a static demo and does not include the full RAG or agentic
-  workflow; however, the architecture has been designed to accommodate
-  future expansion.
+## OpenAI API key setup
 
-Enjoy building your portfolio!
+Do not commit an OpenAI API key into this repository.
+
+The page includes a private testing field where you can paste a temporary key. It is stored only in `sessionStorage` for the current browser tab. This is useful for quick local testing, but it is not safe for a public production site because browser code exposes credentials.
+
+Recommended production setup:
+
+```text
+GitHub Pages frontend
+        ↓
+Serverless proxy endpoint on Vercel, Netlify, Cloudflare Workers, or Render
+        ↓
+OpenAI API
+```
+
+Store the key only on the server side:
+
+```bash
+OPENAI_API_KEY=sk-...
+```
+
+Then make the browser call your proxy, not OpenAI directly.
+
+## Files
+
+```text
+index.html
+assets/
+  app.js
+  styles.css
+  architecture.svg
+README.md
+```
+
+## Extend next
+
+Recommended next models to add:
+
+1. MBTR
+2. LiGR
+3. Rank Transformer
+4. Graph Transformer
+
+Each model should add exactly one intrinsic visual:
+
+- MBTR: multi-behavior transition graph
+- LiGR: user-item interaction graph with learned edge weights
+- Rank Transformer: attention heatmap over user history and candidates
+- Graph Transformer: neighborhood aggregation and message passing visual
