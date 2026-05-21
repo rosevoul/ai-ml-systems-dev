@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Faye RECSYS Demo</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="nav-bar">
+      <div class="logo">FAYE RECSYS</div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="project.html">Project</a>
+        <a href="demo.html" class="active">Demo</a>
+        <a href="#" title="Coming Soon">Architecture</a>
+        <a href="#" title="Coming Soon">Results</a>
+        <a href="#" title="Coming Soon">Notes</a>
+        <a href="#" title="Coming Soon">Blog</a>
+        <a href="#" title="Coming Soon">About</a>
+      </nav>
+    </header>
+    <main class="demo-page">
+      <h1>Interactive Demo</h1>
+      <p>
+        Select a model to see its top recommendations and a brief explanation of
+        why these items were chosen for a sample user. Data in this demo comes
+        from the MovieLens dataset. Training code and data preparation
+        instructions are available in the project repository.
+      </p>
+      <label for="model-select">Choose a model:</label>
+      <select id="model-select">
+        <option value="TwoTower+XGBoost">Two‑Tower + XGBoost</option>
+        <option value="MBTR">MBT4R / Transformers4Rec</option>
+        <option value="LiGR">LiGR</option>
+        <option value="Rank Transformer">Rank Transformer</option>
+        <option value="Graph Transformer">Graph Transformer</option>
+      </select>
+      <div id="recommendations-container"></div>
+    </main>
+    <footer>
+      <p>&copy; 2026 Faye Voulivasi. All rights reserved.</p>
+    </footer>
+    <script src="demo.js"></script>
+  </body>
+</html>
