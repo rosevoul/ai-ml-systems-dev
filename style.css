@@ -201,3 +201,27 @@ main.demo-page {
   font-size: 0.9rem;
   color: var(--color-muted);
 }
+
+/* Form groups on the demo page */
+.form-group {
+  margin-bottom: 2rem;
+}
+
+.form-group h2 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+#movie-selects select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #2f4e79;
+  background-color: var(--color-bg-alt);
+  color: var(--color-text);
+}
+
+#add-movie {
+  margin-top: 0.5rem;
+}

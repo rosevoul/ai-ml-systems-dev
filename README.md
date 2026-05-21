@@ -1,22 +1,30 @@
 # FAYE RECSYS: End‑to‑End Transformer Recommendation Demo
 
-This repository contains a small, self‑contained demo for a modern recommendation
-system built on top of the MovieLens dataset. The goal is to showcase how
+This repository contains an interactive demo for a modern recommendation
+system built on top of the MovieLens dataset. The project illustrates how
 retrieval, various transformer‑based ranking models and generative retrieval
-(RAG) can be combined into an interactive user experience. The site is static
-and can be hosted on GitHub Pages or any static file server.
+(RAG) can be combined into a single workflow. Users can select one movie and
+optionally add up to three additional movies to simulate their viewing history,
+choose a ranking model and see a diagram of the underlying architecture and
+sample recommendations. The site is static and can be hosted on GitHub Pages or
+any static file server.
 
 ## Features
 
-* **Interactive demo** – choose between five models (Two‑Tower + XGBoost,
-  MBT4R/Transformers4Rec, LiGR, Rank Transformer and Graph Transformer) and
-  view the top recommendations for a sample user along with a short
-  explanation.
+* **Movie history selection** – users can choose a movie and add up to three
+  more to simulate their viewing history.
+* **Model selection** – choose between five models (Two‑Tower + XGBoost,
+  MBT4R/Transformers4Rec, LiGR, Rank Transformer and Graph Transformer).
+* **Architecture visualisation** – when a model is selected the page shows a
+  diagram representing the model’s architecture. The hero section of the
+  homepage includes the high‑level architecture image provided by the user.
+* **Top recommendations** – after selecting movies and a model, the page
+  displays sample recommendations and explanations for a hypothetical user.
 * **Dark‑themed layout** – inspired by modern ML dashboards, featuring a
   hero section, navigation bar and cards for each recommendation.
 * **Modular design** – the code is organised into HTML, CSS and JavaScript
-  files with a small JSON file holding precomputed recommendations. This
-  makes it easy to swap in your own data.
+  files with embedded data. You can replace the embedded lists with your
+  own models and recommendations.
 
 ## Getting Started
 

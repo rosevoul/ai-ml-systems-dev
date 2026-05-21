@@ -28,15 +28,27 @@
         from the MovieLens dataset. Training code and data preparation
         instructions are available in the project repository.
       </p>
-      <label for="model-select">Choose a model:</label>
-      <select id="model-select">
-        <option value="TwoTower+XGBoost">Two‑Tower + XGBoost</option>
-        <option value="MBTR">MBT4R / Transformers4Rec</option>
-        <option value="LiGR">LiGR</option>
-        <option value="Rank Transformer">Rank Transformer</option>
-        <option value="Graph Transformer">Graph Transformer</option>
-      </select>
-      <div id="recommendations-container"></div>
+      <div class="form-group">
+        <h2>1. Select movies</h2>
+        <p>You can choose one movie and add up to three more to simulate your viewing history.</p>
+        <div id="movie-selects">
+          <!-- First movie select will be injected here by demo.js -->
+        </div>
+        <button id="add-movie" type="button" class="btn-secondary">Add another movie</button>
+      </div>
+      <div class="form-group">
+        <h2>2. Choose a model</h2>
+        <select id="model-select">
+          <option value="TwoTower+XGBoost">Two‑Tower + XGBoost</option>
+          <option value="MBTR">MBT4R / Transformers4Rec</option>
+          <option value="LiGR">LiGR</option>
+          <option value="Rank Transformer">Rank Transformer</option>
+          <option value="Graph Transformer">Graph Transformer</option>
+        </select>
+      </div>
+      <button id="generate" type="button" class="btn-primary">Generate Recommendations</button>
+      <div id="architecture-container" style="margin-top: 2rem;"></div>
+      <div id="recommendations-container" style="margin-top: 1rem;"></div>
     </main>
     <footer>
       <p>&copy; 2026 Faye Voulivasi. All rights reserved.</p>
