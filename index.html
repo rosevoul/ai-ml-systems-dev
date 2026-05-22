@@ -1,156 +1,147 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Faye RecSys Lab | Two-Tower + XGBoost</title>
-  <meta name="description" content="Interactive recommender systems portfolio demo showing Two-Tower retrieval, XGBoost ranking, explanations, and model internals." />
-  <link rel="stylesheet" href="assets/styles.css" />
+  <title>Faye RecSys — Transformer + RAG + Agentic Recommender System</title>
+  <meta name="description" content="A portfolio demo showing a full-stack modern recommendation pipeline: two-tower retrieval, transformer re-ranking, RAG context assembly, and agentic orchestration." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="#home" aria-label="Faye RecSys Lab home">
-      <span class="brand-mark">FR</span>
-      <span>Faye RecSys Lab</span>
+
+<div id="loading-overlay">
+  <div class="loading-spinner"></div>
+  <p class="loading-text">Loading pipeline data…</p>
+</div>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#hero">
+      <span class="logo-dot"></span>
+      Faye RecSys
     </a>
-    <nav aria-label="Main navigation">
-      <a href="#demo">Demo</a>
-      <a href="#architecture">Architecture</a>
-      <a href="#internals">Model Intrinsic</a>
-      <a href="#setup">API Setup</a>
-    </nav>
-  </header>
+    <ul class="nav-links">
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#retrieval">Retrieval</a></li>
+      <li><a href="#reranking">Re-ranking</a></li>
+      <li><a href="#agentic">Agentic</a></li>
+      <li><a href="#recommendations">Results</a></li>
+    </ul>
+  </div>
+</nav>
 
-  <main>
-    <section id="home" class="hero section-grid">
-      <div class="hero-copy">
-        <p class="eyebrow">Modern recommender systems portfolio demo</p>
-        <h1>Two-Tower retrieval + XGBoost ranking, explained visually.</h1>
-        <p class="lead">
-          A compact end-to-end recommendation stack: user and item embeddings retrieve candidates, a ranking model scores them, and explanations show why each movie was recommended.
-        </p>
-        <div class="hero-actions">
-          <a class="button primary" href="#demo">Explore demo</a>
-          <a class="button secondary" href="#architecture">View architecture</a>
-        </div>
-        <div class="metrics-strip" aria-label="Demo metrics">
-          <div><strong id="metricUsers">12</strong><span>synthetic users</span></div>
-          <div><strong id="metricMovies">28</strong><span>MovieLens-style movies</span></div>
-          <div><strong>1</strong><span>implemented model</span></div>
-        </div>
-      </div>
-      <figure class="architecture-card" id="architecture">
-        <img src="assets/architecture.svg" alt="Two-Tower plus XGBoost recommender architecture diagram" />
-        <figcaption>Homepage visual intentionally shows only the architecture diagram.</figcaption>
-      </figure>
-    </section>
+<!-- Hero -->
+<section id="hero">
+  <div class="container">
+    <span class="hero-label">Portfolio Project</span>
+    <h1>Transformer + RAG +<br>Agentic Recommender</h1>
+    <p class="hero-sub">A modern end-to-end recommendation system combining two-tower retrieval, transformer re-ranking, generative explanations, and agentic orchestration — built on MovieLens data with offline-precomputed model outputs.</p>
+    <div id="arch-diagram"></div>
+  </div>
+</section>
 
-    <section id="demo" class="panel section-block">
-      <div class="section-heading">
-        <p class="eyebrow">Interactive demo</p>
-        <h2>Random MovieLens-style user → retrieval → ranking → explanations</h2>
-        <p>
-          Start from a random user profile. The demo simulates user history, retrieves candidate movies with embedding similarity, reranks with XGBoost-style features, and generates explanations.
-        </p>
-      </div>
+<!-- User Context -->
+<section id="user-context">
+  <div class="container">
+    <p class="section-label">User Context</p>
+    <h2 class="section-heading">Rating history &amp; profile</h2>
+    <p class="section-desc">Each pipeline run is personalised to a specific user. Switch users to see how all downstream outputs change.</p>
+    <div id="user-panel"></div>
+  </div>
+</section>
 
-      <div class="controls-grid">
-        <label class="control-card">
-          <span>Model</span>
-          <select id="modelSelect" aria-label="Select recommender model">
-            <option value="two_tower_xgb">Two-Tower + XGBoost</option>
-            <option disabled>MBTR — coming next</option>
-            <option disabled>LiGR — coming next</option>
-            <option disabled>Rank Transformer — coming next</option>
-            <option disabled>Graph Transformer — coming next</option>
-          </select>
-        </label>
-        <label class="control-card">
-          <span>Random user seed</span>
-          <select id="userSelect" aria-label="Select random synthetic user"></select>
-        </label>
-        <label class="control-card">
-          <span>Novelty preference</span>
-          <input id="noveltySlider" type="range" min="0" max="100" value="45" />
-        </label>
-        <label class="control-card">
-          <span>Diversity preference</span>
-          <input id="diversitySlider" type="range" min="0" max="100" value="35" />
-        </label>
-      </div>
+<!-- Two-Tower Retrieval -->
+<section id="retrieval">
+  <div class="container">
+    <p class="section-label">Two-Tower Retrieval</p>
+    <h2 class="section-heading">Embedding space</h2>
+    <p class="section-desc">User and movie embeddings projected to 2D via UMAP. The selected user is highlighted; retrieved candidates are ringed.</p>
+    <div id="embedding-scatter"></div>
+  </div>
+</section>
 
-      <div class="demo-layout">
-        <article class="glass-card user-profile">
-          <div class="card-title-row">
-            <h3>Selected user</h3>
-            <button id="randomUserBtn" class="button compact">Randomize</button>
-          </div>
-          <div id="userProfile"></div>
-        </article>
+<!-- Transformer Re-ranking -->
+<section id="reranking">
+  <div class="container">
+    <p class="section-label">Transformer Re-ranking</p>
+    <h2 class="section-heading">Model-specific re-ranking</h2>
+    <p class="section-desc">Each model re-ranks the Two-Tower candidates differently. Switch models to see how rankings and scores change — and what each model's mechanism looks like.</p>
+    <div id="model-tabs"></div>
+    <div class="grid-2" style="margin-top:1.5rem;">
+      <div id="candidate-list-panel"></div>
+      <div id="model-viz-panel"></div>
+    </div>
+  </div>
+</section>
 
-        <article class="glass-card pipeline-trace">
-          <h3>Pipeline trace</h3>
-          <ol id="pipelineTrace"></ol>
-        </article>
-      </div>
+<!-- Agentic Orchestration -->
+<section id="agentic">
+  <div class="container">
+    <p class="section-label">Agentic Orchestration</p>
+    <h2 class="section-heading">Six-agent pipeline trace</h2>
+    <p class="section-desc">The recommendation query is decomposed into sub-tasks and routed through six specialised agents. Press play to watch the trace animate step by step.</p>
+    <div id="agentic-trace"></div>
+  </div>
+</section>
 
-      <div class="results-toolbar">
-        <h3>Final recommendations</h3>
-        <button id="rerunBtn" class="button primary compact">Rerun scoring</button>
-      </div>
-      <div id="recommendations" class="recommendation-grid"></div>
-    </section>
+<!-- RAG Inspector -->
+<section id="rag">
+  <div class="container">
+    <p class="section-label">RAG + Knowledge Base</p>
+    <h2 class="section-heading">Context retrieval &amp; grounding</h2>
+    <p class="section-desc">For each top recommendation, the most relevant knowledge base documents are retrieved and used to ground the explanation. Select a document to see which phrases it contributed.</p>
+    <div id="rag-inspector"></div>
+  </div>
+</section>
 
-    <section id="internals" class="section-block internals-grid">
-      <div class="section-heading wide">
-        <p class="eyebrow">Model intrinsic visual</p>
-        <h2>Two-Tower + XGBoost internals</h2>
-        <p>One visual shows the full intrinsic behavior for the selected model: embedding retrieval on the left, ranking feature contribution on the right.</p>
-      </div>
-      <article class="glass-card visual-card">
-        <div class="card-title-row">
-          <h3>Embedding space</h3>
-          <span class="pill">Two-Tower retrieval</span>
-        </div>
-        <svg id="embeddingSvg" viewBox="0 0 520 360" role="img" aria-label="Embedding space visualization"></svg>
-      </article>
-      <article class="glass-card visual-card">
-        <div class="card-title-row">
-          <h3>Ranking explanation</h3>
-          <span class="pill">XGBoost-style score</span>
-        </div>
-        <div id="featureBars" class="feature-bars"></div>
-      </article>
-    </section>
+<!-- Recommendations -->
+<section id="recommendations">
+  <div class="container">
+    <p class="section-label">Final Recommendations</p>
+    <h2 class="section-heading">Personalised results</h2>
+    <p class="section-desc">Top recommendations after the full pipeline — retrieval, transformer re-ranking, agentic alignment, and RAG-grounded explanations.</p>
+    <div id="rec-grid"></div>
+  </div>
+</section>
 
-    <section id="setup" class="panel section-block setup-grid">
+<!-- Candidate Funnel + Feature Chart -->
+<section id="intrinsics">
+  <div class="container">
+    <p class="section-label">Model Intrinsics</p>
+    <h2 class="section-heading">Pipeline metrics</h2>
+    <p class="section-desc">How the candidate pool narrows through each stage, and the feature contributions driving the top recommendation.</p>
+    <div class="grid-2">
       <div>
-        <p class="eyebrow">Optional online interaction</p>
-        <h2>OpenAI API setup</h2>
-        <p>
-          The public GitHub Pages version should not contain a committed API key. This demo works without one using deterministic explanations. For private testing, paste a temporary key below; it is stored only in this browser session.
-        </p>
+        <h3 style="margin-bottom:1rem;font-size:0.9rem;color:var(--text-secondary);">Candidate funnel</h3>
+        <div id="candidate-funnel"></div>
       </div>
-      <article class="glass-card api-card">
-        <label for="apiKeyInput">OpenAI API key for local/private testing</label>
-        <div class="api-row">
-          <input id="apiKeyInput" type="password" placeholder="sk-..." autocomplete="off" />
-          <button id="saveKeyBtn" class="button compact">Save session key</button>
-          <button id="clearKeyBtn" class="button compact secondary">Clear</button>
-        </div>
-        <p id="apiStatus" class="muted">No key stored. Demo explanations use local deterministic logic.</p>
-        <pre><code>Recommended production path:
-GitHub Pages frontend → serverless proxy → OpenAI API
-Store OPENAI_API_KEY only in the serverless environment.</code></pre>
-      </article>
-    </section>
-  </main>
+      <div>
+        <h3 style="margin-bottom:1rem;font-size:0.9rem;color:var(--text-secondary);">Feature contributions — top recommendation</h3>
+        <div id="feature-chart"></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <footer class="site-footer">
-    <span>Built for a Machine Learning Engineer portfolio.</span>
-    <span>Static GitHub Pages compatible.</span>
-  </footer>
+<!-- Pipeline Trace -->
+<section id="pipeline-trace">
+  <div class="container">
+    <p class="section-label">Pipeline Trace</p>
+    <h2 class="section-heading">Full step breakdown</h2>
+    <p class="section-desc">Every stage from raw user context to final output.</p>
+    <div id="pipeline-trace-list"></div>
+  </div>
+</section>
 
-  <script src="assets/app.js"></script>
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <p class="footer-text">RAG / Agentic Recommender System. A portfolio demo showing how retrieval, ranking, reasoning, and agentic feedback loops can work together in a modern recommendation stack. Built with MovieLens data and offline-precomputed model outputs.</p>
+    <a href="https://github.com/faye-voulivasi/faye-recsys" style="font-size:0.82rem;color:var(--text-muted);text-decoration:none;">GitHub →</a>
+  </div>
+</footer>
+
+<script type="module" src="/src/main.ts"></script>
 </body>
 </html>
