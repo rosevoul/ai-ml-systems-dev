@@ -92,10 +92,10 @@ export function renderGraphViz(container: HTMLElement, state: AppState): void {
 
   sim.on('tick', () => {
     linkSel
-      .attr('x1', d => (d.source as SimNode).x!)
-      .attr('y1', d => (d.source as SimNode).y!)
-      .attr('x2', d => (d.target as SimNode).x!)
-      .attr('y2', d => (d.target as SimNode).y!)
+      .attr('x1', d => (d.source as unknown as SimNode).x!)
+      .attr('y1', d => (d.source as unknown as SimNode).y!)
+      .attr('x2', d => (d.target as unknown as SimNode).x!)
+      .attr('y2', d => (d.target as unknown as SimNode).y!)
     nodeSel.attr('cx', d => d.x!).attr('cy', d => d.y!)
   })
 

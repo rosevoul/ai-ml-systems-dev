@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import type { AppState, MoviePoint, UserPoint } from '../data/types'
+import type { AppState, MoviePoint } from '../data/types'
 
 const MARGIN = { top: 20, right: 20, bottom: 20, left: 20 }
 const HEIGHT = 400
@@ -101,11 +101,11 @@ export function mountEmbeddingScatter(container: HTMLElement, state: AppState): 
 
   // ── Legend ────────────────────────────────────────────────────────────────
   const legend = svg.append('g').attr('transform', `translate(${width - 160}, 20)`)
-  const items = [
+  const items: { color: string; label: string; isUser?: boolean }[] = [
     { color: 'rgba(255,255,255,0.2)', label: 'All movies' },
     { color: '#6366f1', label: 'Retrieved candidates' },
     { color: '#6366f1', label: 'Selected user', isUser: true },
-  ] as const
+  ]
   items.forEach(({ color, label, isUser }, i) => {
     legend.append('circle').attr('cx', 0).attr('cy', i * 20).attr('r', isUser ? 5 : 3.5).attr('fill', color).attr('stroke', isUser ? '#a5b4fc' : 'none').attr('stroke-width', 1.5)
     legend.append('text').attr('x', 12).attr('y', i * 20 + 4.5).text(label).attr('fill', 'var(--text-secondary)').style('font-size', '11px').attr('font-family', 'Inter, system-ui, sans-serif')

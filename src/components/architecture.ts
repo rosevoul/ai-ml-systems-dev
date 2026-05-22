@@ -126,7 +126,7 @@ function edgePath(edge: Edge): string {
 }
 
 // ── SVG builder ──────────────────────────────────────────────────────────────
-function buildSVG(container: HTMLElement): SVGSVGElement {
+function buildSVG(_container: HTMLElement): SVGSVGElement {
   const NS = 'http://www.w3.org/2000/svg'
 
   function el<K extends keyof SVGElementTagNameMap>(tag: K, attrs: Record<string, string | number> = {}): SVGElementTagNameMap[K] {

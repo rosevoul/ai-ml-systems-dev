@@ -42,7 +42,6 @@ export function updateModelTabs(container: HTMLElement, state: AppState, onTabCh
 export function renderCandidateList(container: HTMLElement, state: AppState): void {
   const uid = state.selectedUserId
   const recs = state.recs.users[uid]?.recommendations ?? []
-  const intrinsic = state.intrinsics[uid]
 
   // Sort candidates by active model score
   const modelKey = state.activeModel
