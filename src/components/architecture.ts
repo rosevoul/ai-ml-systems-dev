@@ -36,6 +36,7 @@ interface Edge {
   from: string
   to: string
   curved?: boolean
+  feedback?: boolean
 }
 
 // ── Node definitions ─────────────────────────────────────────────────────────
@@ -85,6 +86,7 @@ const EDGES: Edge[] = [
   { from: 'reranking',  to: 'agentic'    },
   { from: 'rag',        to: 'agentic',   curved: true },
   { from: 'agentic',    to: 'output'     },
+  { from: 'agentic',    to: 'two-tower', feedback: true },
 ]
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -109,6 +111,16 @@ const COLORS = {
 function edgePath(edge: Edge): string {
   const from = nodeById(edge.from)
   const to   = nodeById(edge.to)
+
+  if (edge.feedback) {
+    // agentic → two-tower: arc below the diagram as a feedback loop
+    const x1 = cx(from)
+    const y1 = from.y + from.h        // bottom of agentic
+    const x2 = cx(to)
+    const y2 = to.y + to.h            // bottom of two-tower
+    const arcY = H - 28               // route just above the bottom edge
+    return `M ${x1} ${y1} C ${x1} ${arcY}, ${x2} ${arcY}, ${x2} ${y2}`
+  }
 
   const x1 = rightX(from)
   const y1 = cy(from)
@@ -177,12 +189,13 @@ function buildSVG(_container: HTMLElement): SVGSVGElement {
     edgeGroup.appendChild(bgPath)
 
     // Animated flow path
+    const isFeedback = edge.feedback === true
     const flowPath = el('path', {
       d,
       fill: 'none',
-      stroke: 'rgba(99,102,241,0.45)',
-      'stroke-width': '1.5',
-      'stroke-dasharray': '6 10',
+      stroke: isFeedback ? 'rgba(251,191,36,0.5)' : 'rgba(99,102,241,0.45)',
+      'stroke-width': isFeedback ? '1' : '1.5',
+      'stroke-dasharray': isFeedback ? '4 8' : '6 10',
       'marker-end': 'url(#arrow)',
     })
     const animateEl = document.createElementNS(NS, 'animate')

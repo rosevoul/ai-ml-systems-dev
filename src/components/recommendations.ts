@@ -10,7 +10,7 @@ export function updateRecommendations(container: HTMLElement, state: AppState): 
 
 function renderRecs(container: HTMLElement, state: AppState) {
   const uid = state.selectedUserId
-  const recs = (state.recs.users[uid]?.recommendations ?? []).slice(0, 8)
+  const recs = (state.recs.users[uid]?.recommendations ?? []).slice(0, 6)
 
   container.innerHTML = `
     <div class="rec-grid">

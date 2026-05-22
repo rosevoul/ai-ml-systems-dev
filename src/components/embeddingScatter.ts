@@ -1,8 +1,8 @@
 import * as d3 from 'd3'
 import type { AppState, MoviePoint } from '../data/types'
 
-const MARGIN = { top: 20, right: 20, bottom: 20, left: 20 }
-const HEIGHT = 400
+const MARGIN = { top: 16, right: 16, bottom: 16, left: 16 }
+const HEIGHT = 260
 
 export function mountEmbeddingScatter(container: HTMLElement, state: AppState): void {
   container.innerHTML = ''
@@ -56,7 +56,7 @@ export function mountEmbeddingScatter(container: HTMLElement, state: AppState): 
   function hideTip() { tooltip.style('opacity', 0) }
 
   // ── Movie dots ────────────────────────────────────────────────────────────
-  const sample: MoviePoint[] = embeddings.movies.filter((_, i) => i % 3 === 0).slice(0, 800)
+  const sample: MoviePoint[] = embeddings.movies.filter((_, i) => i % 5 === 0).slice(0, 400)
 
   g.selectAll<SVGCircleElement, MoviePoint>('.movie-dot')
     .data(sample)
